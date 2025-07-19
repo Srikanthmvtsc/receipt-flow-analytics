@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Receipt } from '@/types/receipt';
 
 interface ReceiptUploadProps {
-  onUpload: (receipt: Omit<Receipt, 'id' | 'uploadDate' | 'status'>) => void;
+  onUpload: (file: File) => Promise<any>;
 }
 
 export const ReceiptUpload = ({ onUpload }: ReceiptUploadProps) => {
@@ -16,6 +16,22 @@ export const ReceiptUpload = ({ onUpload }: ReceiptUploadProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const { toast } = useToast();
+
+  const handleUpload = async (file: File) => {
+    try {
+      await onUpload(file);
+      toast({
+        title: "File uploaded successfully",
+        description: "Your receipt has been processed.",
+      });
+    } catch (error) {
+      toast({
+        title: "Upload failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -114,15 +130,10 @@ export const ReceiptUpload = ({ onUpload }: ReceiptUploadProps) => {
       const receiptData = await extractReceiptData(file);
       
       setUploadProgress(100);
-      setTimeout(() => {
-        onUpload(receiptData);
+      setTimeout(async () => {
+        await handleUpload(file);
         setIsProcessing(false);
         setUploadProgress(0);
-        
-        toast({
-          title: 'Upload Successful',
-          description: `Receipt from ${receiptData.vendor} processed successfully.`,
-        });
       }, 500);
 
     } catch (error) {
@@ -142,14 +153,14 @@ export const ReceiptUpload = ({ onUpload }: ReceiptUploadProps) => {
 
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
-      processFile(files[0]);
+      handleUpload(files[0]);
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      processFile(files[0]);
+      handleUpload(files[0]);
     }
     e.target.value = ''; // Reset input
   };

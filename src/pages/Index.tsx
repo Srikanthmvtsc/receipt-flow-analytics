@@ -11,15 +11,17 @@ import { Upload, BarChart3, Table, Download } from 'lucide-react';
 const Index = () => {
   const {
     receipts,
-    allReceipts,
     stats,
+    loading,
+    error,
     searchFilters,
     sortOptions,
     setSearchFilters,
     setSortOptions,
-    addReceipt,
+    uploadReceipt,
     updateReceipt,
-    deleteReceipt
+    deleteReceipt,
+    exportData
   } = useReceiptData();
 
   return (
@@ -58,7 +60,7 @@ const Index = () => {
 
           {/* Upload Tab */}
           <TabsContent value="upload" className="space-y-6">
-            <ReceiptUpload onUpload={addReceipt} />
+            <ReceiptUpload onUpload={uploadReceipt} />
             
             {/* Quick Stats Preview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -102,7 +104,7 @@ const Index = () => {
 
           {/* Export Tab */}
           <TabsContent value="export" className="space-y-6">
-            <ExportOptions receipts={allReceipts} stats={stats} />
+            <ExportOptions receipts={receipts} stats={stats} onExport={exportData} />
           </TabsContent>
         </Tabs>
       </div>

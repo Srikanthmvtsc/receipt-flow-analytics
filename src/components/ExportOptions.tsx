@@ -7,9 +7,10 @@ import { useToast } from '@/hooks/use-toast';
 interface ExportOptionsProps {
   receipts: Receipt[];
   stats: ReceiptStats;
+  onExport: (format: 'csv' | 'json') => Promise<void>;
 }
 
-export const ExportOptions = ({ receipts, stats }: ExportOptionsProps) => {
+export const ExportOptions = ({ receipts, stats, onExport }: ExportOptionsProps) => {
   const { toast } = useToast();
 
   const exportToCSV = () => {
