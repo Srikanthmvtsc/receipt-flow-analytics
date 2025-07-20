@@ -85,8 +85,8 @@ const Index = () => {
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
-            <StatsCards stats={stats} />
-            <Charts stats={stats} />
+            {stats && <StatsCards stats={stats} />}
+            {stats && <Charts stats={stats} />}
           </TabsContent>
 
           {/* Receipts Tab */}

@@ -26,12 +26,18 @@ export const useReceiptData = () => {
       params.append('sort_field', sortOptions.field);
       params.append('sort_direction', sortOptions.direction);
 
+      console.log('Fetching receipts from:', `${API_BASE_URL}/receipts?${params}`);
       const response = await fetch(`${API_BASE_URL}/receipts?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch receipts');
+      if (!response.ok) {
+        console.error('Receipts fetch failed:', response.status, response.statusText);
+        throw new Error('Failed to fetch receipts');
+      }
       
       const data = await response.json();
+      console.log('Receipts received:', data);
       setReceipts(data);
     } catch (err) {
+      console.error('Error fetching receipts:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
@@ -57,9 +63,15 @@ export const useReceiptData = () => {
 
   const fetchStats = async () => {
     try {
+      console.log('Fetching stats from:', `${API_BASE_URL}/stats`);
       const response = await fetch(`${API_BASE_URL}/stats`);
-      if (!response.ok) throw new Error('Failed to fetch statistics');
+      if (!response.ok) {
+        console.error('Stats fetch failed:', response.status, response.statusText);
+        throw new Error('Failed to fetch statistics');
+      }
+      
       const data = await response.json();
+      console.log('Stats received:', data);
       setStats(data);
     } catch (err) {
       console.error('Error fetching stats:', err);
@@ -67,6 +79,7 @@ export const useReceiptData = () => {
   };
 
   useEffect(() => {
+    console.log('Receipts changed, fetching stats. Receipt count:', receipts.length);
     fetchStats();
   }, [receipts]);
 
