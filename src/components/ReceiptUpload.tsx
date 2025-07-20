@@ -153,14 +153,14 @@ export const ReceiptUpload = ({ onUpload }: ReceiptUploadProps) => {
 
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
-      handleUpload(files[0]);
+      processFile(files[0]);
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      handleUpload(files[0]);
+      processFile(files[0]);
     }
     e.target.value = ''; // Reset input
   };

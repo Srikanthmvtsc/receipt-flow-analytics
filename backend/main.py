@@ -18,12 +18,12 @@ from algorithms import ComplexQueryEngine
 
 app = FastAPI(title="Receipt Analytics API", version="1.0.0")
 
-# CORS middleware
+# CORS middleware - Allow all origins for development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # Add your frontend URLs
+    allow_origins=["*"],  # Allow all origins for development
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -115,12 +115,22 @@ async def upload_file(
         # Clean up uploaded file
         os.remove(file_path)
         
-        return FileUploadResponse(
-            message="File uploaded and processed successfully",
-            receipt_id=db_receipt.id,
-            filename=file.filename,
-            processing_status="completed"
-        )
+        return {
+            "message": "File uploaded and processed successfully",
+            "receipt_id": db_receipt.id,
+            "filename": file.filename,
+            "processing_status": "completed",
+            "success": True,
+            "data": {
+                "id": db_receipt.id,
+                "fileName": file.filename,
+                "vendor": db_receipt.vendor,
+                "date": str(db_receipt.date) if db_receipt.date else None,
+                "amount": db_receipt.amount,
+                "category": db_receipt.category,
+                "description": db_receipt.description
+            }
+        }
         
     except Exception as e:
         # Clean up file on error

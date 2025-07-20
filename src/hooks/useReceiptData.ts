@@ -80,16 +80,27 @@ export const useReceiptData = () => {
       const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
+        mode: 'cors',
       });
 
-      if (!response.ok) throw new Error('Failed to upload receipt');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Upload failed' }));
+        throw new Error(errorData.detail || 'Failed to upload receipt');
+      }
       
       const result = await response.json();
+      
+      // Check if the response indicates success
+      if (!result.success && !result.message) {
+        throw new Error('Upload failed - invalid response format');
+      }
+      
       await fetchReceipts(); // Refresh receipts
       return result;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Upload failed';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
