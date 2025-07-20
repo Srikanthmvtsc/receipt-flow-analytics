@@ -66,18 +66,18 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-card rounded-lg p-4 border">
                 <h3 className="font-semibold text-sm text-muted-foreground">Total Receipts</h3>
-                <p className="text-2xl font-bold text-primary">{stats.totalReceipts}</p>
+                <p className="text-2xl font-bold text-primary">{stats?.totalReceipts || 0}</p>
               </div>
               <div className="bg-card rounded-lg p-4 border">
                 <h3 className="font-semibold text-sm text-muted-foreground">Total Spending</h3>
                 <p className="text-2xl font-bold text-success">
-                  ${stats.totalSpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  ${(stats?.totalSpend || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </p>
               </div>
               <div className="bg-card rounded-lg p-4 border">
                 <h3 className="font-semibold text-sm text-muted-foreground">Average Amount</h3>
                 <p className="text-2xl font-bold text-info">
-                  ${stats.averageAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  ${(stats?.averageAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </p>
               </div>
             </div>
