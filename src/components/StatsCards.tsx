@@ -17,7 +17,7 @@ export const StatsCards = ({ stats }: StatsCardsProps) => {
   const cards = [
     {
       title: 'Total Spend',
-      value: formatCurrency(stats.totalSpend),
+      value: formatCurrency(stats?.totalSpend || 0),
       description: 'Total amount across all receipts',
       icon: DollarSign,
       trend: '+12.5% from last month',
@@ -25,15 +25,15 @@ export const StatsCards = ({ stats }: StatsCardsProps) => {
     },
     {
       title: 'Total Receipts',
-      value: stats.totalReceipts.toString(),
+      value: (stats?.totalReceipts || 0).toString(),
       description: 'Number of processed receipts',
       icon: Receipt,
-      trend: `${stats.totalReceipts} receipts processed`,
+      trend: `${stats?.totalReceipts || 0} receipts processed`,
       color: 'text-info'
     },
     {
       title: 'Average Amount',
-      value: formatCurrency(stats.averageAmount),
+      value: formatCurrency(stats?.averageAmount || 0),
       description: 'Mean spending per receipt',
       icon: TrendingUp,
       trend: 'Across all categories',
@@ -41,10 +41,10 @@ export const StatsCards = ({ stats }: StatsCardsProps) => {
     },
     {
       title: 'Median Amount',
-      value: formatCurrency(stats.medianAmount),
+      value: formatCurrency(stats?.medianAmount || 0),
       description: 'Middle value of all amounts',
       icon: Calculator,
-      trend: `Mode: ${formatCurrency(stats.modeAmount)}`,
+      trend: `Mode: ${formatCurrency(stats?.modeAmount || 0)}`,
       color: 'text-warning'
     }
   ];

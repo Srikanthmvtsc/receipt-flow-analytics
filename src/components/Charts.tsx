@@ -75,7 +75,7 @@ export const Charts = ({ stats }: ChartsProps) => {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={stats.categorySpending} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <BarChart data={stats?.categorySpending || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="category" 
@@ -116,7 +116,7 @@ export const Charts = ({ stats }: ChartsProps) => {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={stats.categorySpending}
+                  data={stats?.categorySpending || []}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -127,7 +127,7 @@ export const Charts = ({ stats }: ChartsProps) => {
                   fill="#8884d8"
                   dataKey="amount"
                 >
-                  {stats.categorySpending.map((entry, index) => (
+                  {(stats?.categorySpending || []).map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                   ))}
                 </Pie>
@@ -148,7 +148,7 @@ export const Charts = ({ stats }: ChartsProps) => {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart 
-                data={stats.topVendors} 
+                data={stats?.topVendors || []}
                 layout="horizontal"
                 margin={{ top: 20, right: 30, left: 60, bottom: 5 }}
               >
@@ -189,7 +189,7 @@ export const Charts = ({ stats }: ChartsProps) => {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={stats.monthlySpending} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <LineChart data={stats?.monthlySpending || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="month" 
@@ -227,7 +227,7 @@ export const Charts = ({ stats }: ChartsProps) => {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={stats.topVendors} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+            <BarChart data={stats?.topVendors || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="vendor" 
